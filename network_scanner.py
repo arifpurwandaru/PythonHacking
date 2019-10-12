@@ -2,6 +2,7 @@
 
 import scapy.all as scapy
 
+# in kali linux just type netdiscover -r 192.168.1.1/24
 
 def scan(ip):
     arp_request = scapy.ARP(pdst=ip)

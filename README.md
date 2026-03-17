@@ -2,10 +2,12 @@
 This just for learning python and Basic hacking
 Please bare in mind that this programs only work well in **Kali Linux 2019** operating system
 
-## Dependency for non Kali Linux OS
-You might want to install those dependencies in your virtual environment if you don't use **Kali Linux**:
+## INSTALLATION
+1. Create and Activate virtual environment. Windows: <code>python -m venv venv && venv\Scripts\activate</code>, Linux: <code>python -m venv venv && source venv/bin/activate</code> 
+2. Install dependency <code>pip install -r requirements.txt</code>
+3. For non Kali linux OS, it is required to install additional app/lib, you can read the details in here:
 - scapy : https://scapy.readthedocs.io/en/latest/installation.html
-
+- e.g., For Ubuntu: <code>sudo apt-get install libcap-dev</code> 
 
 ## List of Programs and Usage
 #### 1. mac_changer.py Usage

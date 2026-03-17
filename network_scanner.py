@@ -16,4 +16,4 @@ def scan(ip):
         print(elem[1].psrc+"\t\t"+elem[1].hwsrc)   # supaya tau nama fieldnya dishow dulu ==> elem[1].show()
 
 
-scan("192.168.1.1/24")
+scan("192.168.18.0/24")

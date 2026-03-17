@@ -15,3 +15,10 @@ This is a simple program to change your mac address, this is the example of usag
 ```bash
 python mac_changer --interface eth0 --mac 00:11:22:33:44:55
 ```
+
+### 2. network_scanner.py Usage
+To run this, you neet to use root/sudo. But make sure you use the right python from venv
+e.g., sudo su first and then reactivate venv and run the script
+```bash
+python network_scanner.py -t 192.168.18.0/24
+```

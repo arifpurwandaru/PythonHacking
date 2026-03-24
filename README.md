@@ -1,6 +1,6 @@
 # Learn Python and Ethical Hacking
 This just for learning python and Basic hacking
-Please bare in mind that this programs only work well in **Kali Linux 2019** operating system
+Please bare in mind that this programs only work well in **Kali Linux** operating system. Not Recommended to run this on Windows, some script behave differently, specially the one with scapy libraries
 
 ## INSTALLATION
 1. Create and Activate virtual environment. Windows: <code>python -m venv venv && venv\Scripts\activate</code>, Linux: <code>python -m venv venv && source venv/bin/activate</code> 

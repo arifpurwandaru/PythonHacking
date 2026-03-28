@@ -55,3 +55,12 @@ sudo python packet_sniffer.py -i wlan0 -f "tcp port 443"
 - "net 192.168.1.0/24" - Traffic in subnet
 - "port 22" - SSH traffic
 - "icmp" - ICMP/ping traffic
+
+## 4. Reconnaissance CLI (recon_cli.py)
+```bash
+# simple dns scan
+python recon_cli.py dnsscan google.com --record-type A
+
+# shodan scan (this will need shodan paid API KEY) add .env file in project folder and add SHODAN_API_KEY
+python recon_cli.py shodan < IP Address >
+```

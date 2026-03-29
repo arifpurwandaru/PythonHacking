@@ -14,8 +14,8 @@ def run_shodan_ip(target: str) -> List[Entity]:
     entities = []
     
     try:
-        # host_info = api.host(target) # This for paid version
-        host_info = api.search(f"ip:{target}") # This for free version
+        host_info = api.host(target) # This for paid version
+        # host_info = api.search(f"ip:{target}") # This for free version
         for item in host_info.get('data', []):
             entities.append(Entity(
                 type="Service",

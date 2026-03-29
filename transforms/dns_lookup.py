@@ -17,6 +17,6 @@ async def run(target: str, art: str) -> list[Entity]:
                     source="dns_lookup"
                 ))
         except Exception as e:
-            print(f"Error resolving {target}: {e}")
+            print(f"Resolving {target} with {key} is failed due to: {e} => Skipping {key} record.")
     
     return entities

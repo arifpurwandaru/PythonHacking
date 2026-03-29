@@ -38,13 +38,13 @@ def run(target: str) -> list[Entity]:
                 entities.append(Entity(
                     type=label,
                     value=str(item),
-                    source="whois"
+                    source=f"whois: {target}"
                 ))
         else:
             entities.append(Entity(
                 type=label,
                 value=str(value),
-                source="whois"
+                source=f"whois: {target}"
             ))
 
     return entities

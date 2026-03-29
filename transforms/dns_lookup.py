@@ -3,7 +3,7 @@ from models.schema import Entity
 
 async def run(target: str, art: str) -> list[Entity]:
     entities = []
-    recordTypes = {"A": "IP4", "MX": "MailXchange", "NS": "NameServer", "TXT": "TextRecord", "CNAME": "CanonicalName", "AAAA": "IP6"}
+    recordTypes = {"A": "IPv4", "MX": "MailXchange", "NS": "NameServer", "TXT": "TextRecord", "CNAME": "CanonicalName", "AAAA": "IP6"}
     if(art):
         recordTypes[art] = art
 

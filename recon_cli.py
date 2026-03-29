@@ -13,12 +13,13 @@ console = Console()
 def display_scan_results(all_entities, title="Scan Results"):
     if all_entities:
         table = Table(title=title)
+        table.add_column("No", style="white", no_wrap=True)
         table.add_column("Type", style="cyan")
         table.add_column("Value", style="magenta")
         table.add_column("Source", style="yellow")
         
-        for entity in all_entities:
-            table.add_row(entity.type, entity.value, entity.source)
+        for i, entity in enumerate(all_entities, start=1):
+            table.add_row(str(i), entity.type, entity.value, entity.source)
         
         console.print(table)
     else:
@@ -35,11 +36,19 @@ def allscan(target: str):
     
     # Run Shodan Recon: Skip for now, no paid API key available, but you can uncomment if you have one
     # shodan_entities = shodan_recon.run_shodan_ip(target)
-    
+
+    # Extract IPv4 addresses from DNS results for WHOIS lookup
+    ipv4_entities = [e for e in dns_entities if e.type == "IPv4"]
+
     # Run WHOIS Lookup
-    whois_entities = whois.run(target)
+    whois_lookup = whois.run(target)
+
+    whois_ip_entities = []
     
-    all_entities = dns_entities + whois_entities
+    for ipv4_entity in ipv4_entities:
+        whois_ip_entities.extend(whois.run(ipv4_entity.value))
+    
+    all_entities = dns_entities + whois_lookup + whois_ip_entities
     
     display_scan_results(all_entities, title="All Recon Results")
 

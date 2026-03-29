@@ -9,15 +9,18 @@ load_dotenv()  # Load environment variables from .env file
 app = typer.Typer(no_args_is_help=True)
 console = Console()
 
-@app.command(no_args_is_help=True)
+@app.command(
+        no_args_is_help=True,
+        epilog="[bold]Examples:[/bold]\n\n  python recon_cli.py dnsscan google.com\n  python recon_cli.py dnsscan example.com --art CAA",
+        rich_help_panel=True)
 def dnsscan(
     target: str = typer.Argument(help="Target domain, e.g., google.com"),
-    record_type: str = typer.Option("A", help="DNS record type, e.g., A, AAAA, MX, CNAME"),
+    art: str = typer.Option(None, help="Additional DNS record type not in default list['A', 'AAAA', 'MX', 'CNAME', 'MX', 'TXT'], e.g., CAA, PTR, SOA, SRV, etc."),
 ):
     """Run DNS Lookup against the target."""
     console.print(f"Running recon on [bold green]{target}[/bold green]...")
 
-    entities = asyncio.run(dns_lookup.run(target, record_type))
+    entities = asyncio.run(dns_lookup.run(target, art))
     
     if entities:
         table = Table(title="Recon Results")

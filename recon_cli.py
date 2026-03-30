@@ -3,7 +3,7 @@ import asyncio
 from dotenv import load_dotenv
 from rich.console import Console
 from rich.table import Table
-from transforms import dns_lookup, shodan_recon, whois
+from transforms import dns_lookup, shodan_recon, whois, subdomain_enum
 
 load_dotenv()  # Load environment variables from .env file
 app = typer.Typer(no_args_is_help=True)
@@ -76,16 +76,33 @@ def shodan(target: str = typer.Argument(help="Target IP address for Shodan recon
     
     display_scan_results(entities, title="Shodan Recon Results")
 
+
 @app.command(
         no_args_is_help=True,
         epilog="[bold]Example:[/bold]\n\n  python recon_cli.py whois-lookup google.com")
-def whois_lookup(target: str = typer.Argument(help="Target domain, e.g., google.com")):
+def whois_lookup(target: str = typer.Argument(help="Target domain or IP address, e.g., google.com, 8.8.8.8")):
     """Run WHOIS lookup against the target."""
     console.print(f"Running WHOIS lookup on [bold green]{target}[/bold green]...")
 
     entities = whois.run(target)
 
     display_scan_results(entities, title="WHOIS Lookup Results")
+
+
+
+@app.command(
+        no_args_is_help=True,
+        epilog="[bold]Examples:[/bold]\n\n  python recon_cli.py subdomain example.com\n  python recon_cli.py subdomain example.com --method crt\n  python recon_cli.py subdomain example.com --method brute")
+def subdomain(
+    target: str = typer.Argument(help="Target domain, e.g., example.com"),
+    method: str = typer.Option("all", help="Enumeration method: 'all', 'brute', 'crt', or 'axfr'")
+):
+    """Enumerate subdomains of the target domain."""
+    console.print(f"Enumerating subdomains for [bold green]{target}[/bold green]...")
+    
+    entities = asyncio.run(subdomain_enum.run(target, method))
+    
+    display_scan_results(entities, title="Subdomain Enumeration Results")
 
 
 if __name__ == "__main__":

@@ -63,4 +63,20 @@ python recon_cli.py dnsscan google.com --art CAA
 
 # shodan scan (this will need shodan paid API KEY) add .env file in project folder and add SHODAN_API_KEY
 python recon_cli.py shodan < IP Address >
+
+# whois lookup
+python recon_cli.py whois-lookup <domain/Ip > 
+
+# Subdomain enumeration
+# All methods (Certificate Transparency + Zone Transfer + Brute Force)
+python recon_cli.py subdomain example.com
+
+# Only Certificate Transparency (fast, public records)
+python recon_cli.py subdomain example.com --method crt
+
+# Only brute force (slower, tests 200+ subdomains)
+python recon_cli.py subdomain example.com --method brute
+
+# Only zone transfer attempt (rarely works)
+python recon_cli.py subdomain example.com --method axfr
 ```

@@ -80,3 +80,31 @@ python recon_cli.py subdomain example.com --method brute
 # Only zone transfer attempt (rarely works)
 python recon_cli.py subdomain example.com --method axfr
 ```
+
+## 5. Compromised Password Check
+```bash
+# Activate virtual environment first
+source venv/bin/activate
+
+# Check a single password (interactive prompt)
+python compromised_password_check.py check
+
+# Check a password directly (insecure - visible in history)
+python compromised_password_check.py check --password "MyPassword123"
+
+# Check with verbose output
+python compromised_password_check.py check -v
+
+# Check multiple passwords from a file
+echo -e "password123\nadmin\nqwerty" > test_passwords.txt
+python compromised_password_check.py check-file test_passwords.txt
+
+# Check file and show passwords in output
+python compromised_password_check.py check-file test_passwords.txt --show-passwords
+
+# Show information about the service
+python compromised_password_check.py info
+
+# Get help
+python compromised_password_check.py --help
+```

@@ -58,6 +58,14 @@ def handle_client(client_socket):
 
         # Parse the HTTP request to extract the target host and port
         lines = request_text.splitlines()
+
+        print("==========================================================> LINES")
+        for line in lines:
+            print(line)
+
+        print("==========================================================> END LINES")
+
+        
         if len(lines) > 0:
             first_line = lines[0]
             parts = first_line.split()
@@ -84,6 +92,7 @@ def handle_client(client_socket):
                     if method.upper() == 'CONNECT':
                         # Signal tunnel establishment, then proxy encrypted bytes both ways.
                         client_socket.sendall(b"HTTP/1.1 200 Connection Established\r\n\r\n")
+                        print("[*] CONNECT tunnel established. HTTPS payload is encrypted, so GET/POST are not visible without TLS interception.")
                         tunnel_data(client_socket, server_socket)
                     else:
                         # Forward the client's request to the target server

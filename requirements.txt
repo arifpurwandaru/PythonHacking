@@ -45,6 +45,6 @@ tqdm==4.67.3
 trio==0.33.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
-urllib3==2.6.3
+urllib3==2.7.0
 xlsxwriter==3.2.9
 cryptography>=45.0.0

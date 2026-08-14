@@ -4,6 +4,7 @@ import argparse
 import itertools
 import scapy.all as scapy
 import socket
+import subprocess
 import sys
 import threading
 import time
@@ -46,9 +47,79 @@ def get_vendor(mac):
     try:
         # Scapy's conf.manufdb can resolve MAC to vendor
         vendor = scapy.conf.manufdb._get_manuf(mac)
-        return vendor if vendor else "Unknown"
+        if not vendor:
+            return "Unknown"
+        if vendor.strip().lower() == mac.strip().lower():
+            return "Unknown"
+        return vendor
     except:
         return "Unknown"
+
+
+def _normalize_os_guess(value):
+    """Reduce broad nmap guesses to the first reported OS candidate."""
+    cleaned = value.strip()
+    if not cleaned:
+        return "Unknown"
+
+    if " (" in cleaned:
+        cleaned = cleaned.split(" (", 1)[0].strip()
+
+    if "|" in cleaned:
+        cleaned = cleaned.split("|", 1)[0].strip()
+
+    return cleaned or "Unknown"
+
+
+def get_os_fingerprint(ip):
+    """Use nmap OS detection as a fallback when vendor resolution is unavailable."""
+    try:
+        result = subprocess.run(
+            ["nmap", "-O", "-Pn", ip],
+            capture_output=True,
+            text=True,
+            timeout=20,
+            check=False,
+        )
+    except (FileNotFoundError, subprocess.SubprocessError, OSError):
+        return "Unknown"
+
+    if result.returncode not in (0, 1):
+        return "Unknown"
+
+    output = result.stdout.splitlines()
+    for line in output:
+        if line.startswith("OS details:"):
+            value = line.split(":", 1)[1].strip()
+            if value:
+                return _normalize_os_guess(value)
+
+    for line in output:
+        if line.startswith("Running"):
+            value = line.split(":", 1)[1].strip()
+            if value:
+                return _normalize_os_guess(value)
+
+    for line in output:
+        if line.startswith("Aggressive OS guesses:"):
+            value = line.split(":", 1)[1].strip()
+            if value:
+                return _normalize_os_guess(value)
+
+    return "Unknown"
+
+
+def get_vendor_or_os(ip, mac):
+    """Return vendor when available, otherwise fall back to OS fingerprinting."""
+    vendor = get_vendor(mac)
+    if vendor != "Unknown":
+        return vendor
+
+    os_fingerprint = get_os_fingerprint(ip)
+    if os_fingerprint != "Unknown":
+        return f"OS: {os_fingerprint}"
+
+    return "Unknown"
 
 
 def scan(ip, iface=None):
@@ -81,7 +152,7 @@ def scan(ip, iface=None):
             "ip": ip_addr,
             "mac": mac_addr,
             "hostname": get_hostname(ip_addr),
-            "vendor": get_vendor(mac_addr)
+            "vendor": get_vendor_or_os(ip_addr, mac_addr)
         }
         clients_list.append(client_dict)
 

@@ -11,7 +11,7 @@ python-dotenv>=1.0.0
 # additional dependencies
 annotated-doc==0.0.4
 annotated-types==0.7.0
-anyio==4.13.0
+anyio==4.14.2
 attrs==26.1.0
 beautifulsoup4==4.14.3
 bs4==0.0.2

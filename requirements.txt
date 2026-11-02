@@ -2,7 +2,7 @@
 pydantic==2.12.5 
 scapy==2.7.0 
 typer==0.24.1 
-dnspython==2.8.0
+dnspython==2.9.0
 holehe==1.61
 shodan==1.31.0
 python-whois==0.9.6
